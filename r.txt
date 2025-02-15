@@ -1,0 +1,181 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:register/Home.dart';
+
+
+
+class Register extends StatefulWidget {
+  const Register({super.key});
+
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  final TextEditingController _NameContoler =TextEditingController();
+  final TextEditingController _EmailControler =TextEditingController();
+  final TextEditingController _PsswordControler =TextEditingController();
+  final FirebaseFirestore _firestore =FirebaseFirestore.instance;
+  final FirebaseAuth _auth =FirebaseAuth.instance;
+
+
+  void Insert() async {
+    try{
+      if(_NameContoler.text.isNotEmpty && _EmailControler.text.isNotEmpty && _PsswordControler.text.isNotEmpty ){
+        await _firestore.collection('Register').add({
+
+          'Name' : _NameContoler.text.trim(),
+          'Email' : _EmailControler.text.trim(),
+          'Password' : _PsswordControler.text,
+
+        });
+        await _auth.createUserWithEmailAndPassword(
+            email: _EmailControler.text.trim(),
+            password: _PsswordControler.text
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("insert Succussful"),),
+        );
+
+
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("insert Faild"),),
+        );
+      }
+
+    }catch (e){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error : $e"),),
+      );
+    }
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFE3F0FF),
+      body: Container(
+        child: Column(
+          children: [
+            Center(
+              child: Container(
+                margin: const EdgeInsets.only(top: 40.0),
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFFCDFFCE),
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/logo.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Text("Register Your Account",style: TextStyle(color: Color(0xFF000000),fontWeight: FontWeight.bold,fontSize: 30.0),),
+            ),
+            Wrap(
+              children:[ Container(
+                width: 600,
+                height:350,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color(0xFFDBDFFF),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextField(
+                        keyboardType: TextInputType.text,
+                        controller: _NameContoler,
+                        decoration: InputDecoration(
+                            fillColor: Color(0xFFFFFFFF),
+                            filled: true,
+                            hintText: "Anamp",
+                            prefixIcon: Icon(Icons.person,color: Color(0xFF1FBC0C),size: 28,weight: 80,),
+                            helperText: "username must text",
+                            border: OutlineInputBorder(
+                              borderRadius:  BorderRadius.circular(10),
+                            ),
+                        ),
+
+                      ),
+
+
+                      TextField(
+                        keyboardType: TextInputType.emailAddress,
+                        controller: _EmailControler,
+                        decoration: InputDecoration(
+                          fillColor: Color(0xFFFFFFFF),
+                          filled: true,
+                          hintText: "abc@gmail.com",
+                          prefixIcon: Icon(Icons.email,color: Color(0xFF1FBC0C),size: 28,weight: 80,),
+                          helperText: "Email adderss",
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF1FBC0C),width: 2),
+                            borderRadius:  BorderRadius.circular(10),
+                          ),
+
+                        ),
+
+                      ),
+
+                      TextField(
+                        keyboardType: TextInputType.visiblePassword,
+                        controller: _PsswordControler,
+                        obscureText: true,
+                        decoration: InputDecoration(
+
+                          fillColor: Color(0xFFFFFFFF),
+                          filled: true,
+                          hintText: "Ab#c1@",
+                          prefixIcon: Icon(Icons.lock,color: Color(0xFF1FBC0C),size: 28,weight: 80,),
+                          helperText: "Password adderss",
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF1FBC0C),width: 2),
+                            borderRadius:  BorderRadius.circular(10),
+                          ),
+
+                        ),
+
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: 35.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: FloatingActionButton(
+                            backgroundColor: Color(0xFF1FBC0C),
+                            foregroundColor: Color(0xFFFFFFFF),
+                              onPressed: (){
+                                Insert();
+                              },
+                            child: Text("Sign Up"),
+
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
+              ],
+            ),
+
+
+          ],
+        ),
+      ),
+    );
+  }
+}

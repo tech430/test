@@ -1,0 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:register/Login.dart';
+
+import 'Home.dart';
+import 'Register.dart';
+
+void main() async {
+  WidgetsFlutterBinding .ensureInitialized();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+        apiKey: 'AIzaSyAJdOl7aCtVYgyHaR-Nbk_gqZRYIyE6Axo',
+        appId: '1:176423204334:android:d91f2767d39664aef20aff',
+        messagingSenderId: '',
+        projectId: 'foodapp-e0370'
+    ),
+  );
+  runApp(const MaterialApp(
+    title: "ATFoot",
+    //home: Register(),
+    home: Home(),
+    debugShowCheckedModeBanner: false,
+  ));
+}
