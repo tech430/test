@@ -1,0 +1,44 @@
+set terminal pdf
+set output "SmartphoneAnalysis.pdf"
+set title "Smartphone Attributes"
+set xlabel "Price"
+set ylabel "Battery Capacity (mAh) / Screen Size (inches)"
+plot "SmartphoneData.txt" using 4:2 with lines title "Battery Capacity vs Price"
+plot "SmartphoneData.txt" using 4:3 with linespoints title "Screen Size vs Price"
+
+
+set terminal png size 600,400
+set output "SmartphoneAnalysis.png"
+set title "Smartphone Attributes"
+set xlabel "Price"
+set ylabel "Battery Capacity (mAh) / Screen Size (inches)"
+plot "SmartphoneData.txt" using 4:2 with lines title "Battery Capacity vs Price"
+
+
+
+set terminal pdf
+set output "Histogram.pdf"
+set title "Smartphone Attributes"
+set xlabel "Price"
+set ylabel "Battery Capacity (mAh) / Screen Size (inches)"
+set style data histogram
+set style histogram clustered gap 1
+set style fill solid border -1
+set key outside
+set xtic rotate by -45
+plot "SmartphoneData.txt" using 4:xtic(1) title "Model vs Price",\
+'' using 2 title "BatteryCapacity"
+
+
+
+//Netanim
+    AnimationInterface anim("ICT324.xml");
+    anim.SetConstantPosition(p2pNodes.Get(0),10.0,10.0);
+    anim.SetConstantPosition(csmaNodes.Get(0),30.0,20.0);
+    anim.SetConstantPosition(csmaNodes.Get(1),80.0,30.0);
+    anim.SetConstantPosition(csmaNodes.Get(2),50.0,40.0);
+    anim.SetConstantPosition(csmaNodes.Get(3),20.0,50.0);
+    
+    //Ascii trace helper for Tracematrics
+    AsciiTraceHelper ascii;
+    pointToPoint.EnableAsciiAll(ascii.CreateFileStream("ascii_1024.tr"));
